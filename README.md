@@ -23,9 +23,9 @@ The extension modules are provided in the subfolder Modules. The following exten
 - **Administration modules** including local administration for levonorgestrel and metronidazole.
 
 ### R_FRT_Parameters
-Two R scripts are available to support the parametrization of the female reproductive tract module in the absence of *in vivo* and/or *in vitro* data. ([Chen 2015](#references))
+Two R scripts are available to support the parametrization of the female reproductive tract module in the absence of *in vivo* and/or *in vitro* data. 
 
-- **DiffusionParameter**: QSAR calculation of the diffusion coefficient between the fluid and tissue compartments in the female reproductive tract.
+- **DiffusionParameter**: QSAR calculation of the diffusion coefficient between the fluid and tissue compartments in the female reproductive tract. ([Chen 2015](#references))
 - **FractionUnionized**: calculation of the unionized fraction in cervicovaginal fluid and uterine fluid based on the Henderson-Hasselbalch equation.
 
 ## How to extend a base PK-Sim<sup>®</sup> PBPK model for the female reproductive tract in (MoBi<sup>®</sup>)
