@@ -6,7 +6,7 @@ The extension module consists of five tissue compartments (endometrium, myometri
 
 <p align="center">
 
-<img src="FRT_Structure_V1.png" width="50%"/>
+<img src="FRT_Structure_V2.png" width="50%"/>
 
 </p>
 
