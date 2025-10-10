@@ -28,6 +28,9 @@ Two R scripts are available to support the parametrization of the female reprodu
 - **DiffusionParameter**: QSAR calculation of the diffusion coefficient between the fluid and tissue compartments in the female reproductive tract. ([Chen 2015](#references))
 - **FractionUnionized**: calculation of the unionized fraction in cervicovaginal fluid and uterine fluid based on the Henderson-Hasselbalch equation.
 
+### Reports
+The subfolder Rreports contains evaluation reports and the {esqlabsR} project to generate the reports. The module has been evaluated with metronidazole and levonorgestrel.
+
 ## How to extend a base PK-Sim<sup>®</sup> PBPK model for the female reproductive tract in (MoBi<sup>®</sup>)
 
 This section describes the workflow for extending a base PBPK model developed in PK-Sim<sup>®</sup> with the female reproductive tract module, using the Metronidazole model as an example.
@@ -56,6 +59,21 @@ Extension of a PBPK model for the female reproductive tract requires the followi
 12. Select the individual and expression profiles. Click ‘OK’. 
 13. Run the simulation.
 
+## Version information
+
+The MoBi<sup>®</sup> project files and modules were created in version 12.
+
+## Code of conduct
+
+Everyone interacting in the Open Systems Pharmacology community (codebases, issue trackers, chat rooms, mailing lists, etc.) is expected to follow the Open Systems Pharmacology [code of conduct](https://github.com/Open-Systems-Pharmacology/Suite/blob/master/CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct).
+
+## Contribution
+
+We encourage contributions to the Open Systems Pharmacology community. Before getting started, please read the [contribution guidelines](https://github.com/Open-Systems-Pharmacology/Suite/blob/master/CONTRIBUTING.md#ways-to-contribute). If you are contributing code, please be familiar with the [coding standard](https://github.com/Open-Systems-Pharmacology/Suite/blob/master/CODING_STANDARDS.md#visual-studio-settings).
+
+## License
+
+The model code is distributed under the [GPLv2 License](https://github.com/Open-Systems-Pharmacology/Suite/blob/develop/LICENSE).
 
 ## References
 
