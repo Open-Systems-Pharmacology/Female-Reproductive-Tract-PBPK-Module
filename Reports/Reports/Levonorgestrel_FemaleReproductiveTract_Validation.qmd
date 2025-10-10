@@ -1,0 +1,237 @@
+---
+title: "Female reproductive tract module validation report" # Title of the document
+subtitle: "Levonorgestrel simulations" # Subtitle of the document. May be left empty
+author: "" # Author of the document. May be left empty
+institute: "ESQlabs GmbH"
+date: "now"
+date-format: "YYYY-MM-DD HH:mm:ss" 
+params:  
+  loadPreSimulatedResults: FALSE # If `TRUE`, results will be loaded from the folder specified in `loadResultsFolder`
+  loadResultsFolder: "Levonorgestrel" # Sub-folder where simulated results is located, in case `loadPreSimulatedResults` is `TRUE`. The folder must be located in the "SimulationResults" folder defined in the `ProjectConfiguration`.
+output-file: "Female reproductive tract module validation report - Levonorgestrel" #Name of the output file.
+link-citations: TRUE
+reference-section-title: "References"
+bibliography: references_levonorgestrel.bib
+execute:
+  echo: false #do not show code chunks
+  output: true
+  warning: false # do not print warning
+  cache: false # do not use cache unless specified in chunks
+format:
+  pdf:
+    toc: true # display table of content (TOC)
+    toc-depth: 3 # display three levels in TOC
+    toc-title: Table of Content # override default "Content" TOC title
+    lof: false # Print list of figures?
+    lot: false # Print list of tables?
+    fig-cap-location: bottom # figure captions location
+    tbl-cap-location: top # table captions location
+    number-sections: true # add number to sections
+    colorlinks: true # links format
+    fig-dpi: 300 # plot quality
+    fig-width: 6 # plot quality
+    fig-asp: 0.618 # h/w ratio
+    fig-pos: "H" # ensure plots don't move to bottom of doc
+    fig-align: center # plots are centered by default
+    papersize: A4
+   # fontfamily: "Segoe UI" # Can we use "Segoe UI Light" here?
+---
+
+```{r initialize, include = FALSE, eval = TRUE}
+# Load required libraries
+library(esqlabsR)
+# Source all utility files
+sourceAll("utils")
+# Create project configuration
+projectConfiguration <- esqlabsR::createProjectConfiguration(path = "../ProjectConfiguration.xlsx")
+
+## Set name of the observed data file
+projectConfiguration$dataFile <- "Levonorgestrel_TimeValuesData.xlsx"
+```
+
+```{r simulateScenarios1, include = FALSE, eval = TRUE}
+# This code runs the defined scenarios, generates figures, etc. This chunk can be re-used multiple times
+# in the report. When re-using, remember to re-name the chunk as every chunk must have a unique name.
+
+# Define the scenarios to execute, the sheets to load data from, and the plots to generate in this run
+scenarioNames <- list(
+  "FRT_LNG_oral_singleDose",
+  "FRT_LNG_oral_multipleDose", 
+  "Mirena_WeibullRelease"
+)
+
+dataSheets <- c(
+  "LNG"
+)
+  
+plotGridNames <- c(
+  "Mirena_WeibullRelease", 
+  "LNG_plasma_single",
+  "LNG_Nilsson_oral"
+)
+
+outputFolder <- "Levonorgestrel"
+
+# Adjust simulation run options, if necessary.
+# E.g. disable check for negative values if required
+simulationRunOptions <- NULL
+# simulationRunOptions <- ospsuite::SimulationRunOptions$new()
+# simulationRunOptions$checkForNegativeValues <- FALSE
+
+reportResults <- createResults(
+  projectConfiguration = projectConfiguration,
+  params = params,
+  scenarioNames = scenarioNames,
+  customParams = NULL,
+  dataSheets = dataSheets,
+  customDataSets = dataSets,
+  plotGridNames = plotGridNames,
+  simulationRunOptions = simulationRunOptions
+)
+
+# A separate set of scenarios can be executed e.g. with specified custom parameters.
+# The two sets of results can be conbined with the function `combineResults()`.
+
+# Optionally - export the figures to PNG files
+# exportPlotsToPNG(reportResults$plots)
+```
+
+\newpage
+
+::: callout-note
+```{r resultsOrigin, echo=FALSE, results='asis'}
+if (params$loadPreSimulatedResults) {
+  cat("This report has been created with simulation results loaded from results folder '", params$loadResultsFolder, "'.")
+} else {
+  cat("This report has been created by running the simulations. The results have been stored in folder '", reportResults$scenarioResults$outputFolder, "'.")
+}
+```
+:::
+
+\newpage
+
+# Introduction
+
+This report presents the validation of the female reproductive tract module using Levonorgestrel simulations. The module is designed to simulate the pharmacokinetics of drug targetting tissues in the female reproductive tract, and distribution of the drug upon local administration (e.g., vaginal, intrauterine or cervical).
+
+Levonorgestrel is a synthetic progestogen widely used in various hormonal contraceptive formulations. A PBPK model for oral adminstration of levonorgestrel was obtained from literature [@cicali_quantitative_2021], and extended for intrauterine (IUD) administration.
+
+# Compound: Levonorgestrel 1
+
+## Parameters
+
+Name                                             | Value         | Value Origin                                                   | Alternative          | Default
+------------------------------------------------ | ------------- | -------------------------------------------------------------- | -------------------- | -------
+Solubility at reference pH                       | 14 mg/l       | Other-Assumption-Biorelevant solubility estimated using Simcyp | Estimated FaSSIF     | True   
+Reference pH                                     | 6.5           | Other-Assumption-Biorelevant solubility estimated using Simcyp | Estimated FaSSIF     | True   
+Lipophilicity                                    | 4 Log Units   | Database-Manual Fit                                            | logP                 | True   
+Fraction unbound (plasma, reference value)       | 1             | Other-Other-Binding kinetics operating in mechanistic mode     | fu                   | True   
+Permeability                                     | 0.31 cm/min   |                                                                | Parameter Estimation | False  
+Specific intestinal permeability (transcellular) | 0.0002 cm/min |                                                                | Fitted               | True   
+Is small molecule                                | Yes           |                                                                |                      |        
+Molecular weight                                 | 312.44 g/mol  |                                                                |                      |        
+Plasma protein binding partner                   | Unknown       |                                                                |                      |        
+Density (drug)                                   | 1.2 g/cm³     | Unknown                                                        |                      |        
+
+
+## Calculation methods
+
+Name                    | Value              
+----------------------- | -------------------
+Partition coefficients  | Rodgers and Rowland
+Cellular permeabilities | PK-Sim Standard    
+
+
+## Processes
+
+### Systemic Process: Total Hepatic Clearance-Parameter identification
+
+Species: Human
+
+#### Parameters
+
+Name                          | Value          | Value Origin                                                                                                         
+----------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------
+Body weight                   | 60 kg          | Unknown                                                                                                              
+Hematocrit                    | 0.41           | Unknown                                                                                                              
+Fraction unbound (experiment) | 0.014          |                                                                                                                      
+Lipophilicity (experiment)    | 3.65 Log Units |                                                                                                                      
+Plasma clearance              | 0.1 l/h/kg     | Parameter Identification
+
+
+### Metabolizing Enzyme: CYP3A4-Parameter Identification
+
+Molecule: CYP3A4
+
+Metabolite: Metabolite
+
+#### Parameters
+
+Name                           | Value                        | Value Origin            
+------------------------------ | ---------------------------- | ------------------------
+In vitro CL/recombinant enzyme | 1.45 µl/min/pmol rec. enzyme | Parameter Identification
+
+
+### Specific Binding: SHBG-Qi-Gui & Humpel 1990
+
+Molecule: SHBG
+
+#### Parameters
+
+Name | Value      | Value Origin
+---- | ---------- | ------------:
+koff | 17.4 1/min |             
+Kd   | 0.0005 µM  |             
+
+
+### Specific Binding: ALB-Bayer report
+
+Molecule: ALB
+
+#### Parameters
+
+Name | Value     | Value Origin
+---- | --------- | ------------:
+koff | 6.5 1/min |             
+Kd   | 6 µmol/l  |             
+
+
+# Clinical Data
+
+Data from the following studies has been used for model validation [@cicali_quantitative_2021; @apter_pharmacokinetics_2014; @nilsson_tissue_1982]:
+
+| Reference             | Administration route     | Dose         | Clinical data                        | Population                | Weight (kg) | Height (cm) | Age (years) | Number of participants |
+|-----------------------|--------------------------|--------------|---------------------------------------|------------------------------|-------------|-------------|-------------|------------------------|
+| Cicali 2021       | PO              | 0.09 mg     | Plasma | European ICRP (female)       |    -    |      -    |       -  | <20   |
+| Nilsson 1982      | PO              | 0.25 mg       | Plasma; Fat; Endometrium; Myometrium | European ICRP (female)       |   -     |     -    |   -     | 4  |    
+| Apter 2014       | Intrauterine (IUD)              | 20 µg/24h       | Plasma | European ICRP (female)       |    -     |     -     |    -     | <15   |    
+
+# Results
+
+Comparison of individual simulations with observed data are presented in the following figures.
+
+```{r, include = TRUE, eval = TRUE}
+#| label: fig-Levonorgestrel-LNG_plasma_single
+#| fig-cap: "Concentration-time profiles (a) and goodness-of-fit plots (b) of levonorgestrel administered as a single 0.09 mg oral dose (a, b) administration. Lines represent predicted concentration for the mean individual. Points (errorbars) represent mean (standard deviation) observed data [@cicali_quantitative_2021]. Solid line represent unity, and dashed lines represent 2-fold deviation. "
+
+reportResults$plots$`LNG_plasma_single`
+```
+
+```{r, include = TRUE, eval = TRUE, fig.asp = 0.8}
+#| label: fig-Levonorgestrel-LNG_Nilsson_oral
+#| fig-cap: "Concentration-time profiles (a) and goodness-of-fit plots (b) of levonorgestrel administered as a multiple 0.25 mg oral dose (a, b) administration. Lines represent predicted concentration for the mean individual. Points (errorbars) represent mean (standard deviation) observed data [@nilsson_tissue_1982]. Solid line represent unity, and dashed lines represent 2-fold deviation."
+
+
+reportResults$plots$`LNG_Nilsson_oral`
+```
+
+```{r, include = TRUE, eval = TRUE}
+#| label: fig-Levonorgestrel-Mirena_WeibullRelease
+#| fig-cap: "Concentration-time profiles (a) and goodness-of-fit plots (b) of levonorgestrel administered as a 52 mg intrauterine (a, b) administration. Lines represent predicted concentration for the mean individual. Points (errorbars) represent mean (standard deviation) observed data [@apter_pharmacokinetics_2014]. Solid line represent unity, and dashed lines represent 2-fold deviation. "
+
+reportResults$plots$`Mirena_WeibullRelease`
+```
+
+# References
+
+

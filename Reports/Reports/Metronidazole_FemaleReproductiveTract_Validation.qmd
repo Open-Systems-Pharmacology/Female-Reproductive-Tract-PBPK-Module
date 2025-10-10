@@ -1,0 +1,347 @@
+---
+title: "Female reproductive tract module validation report" # Title of the document
+subtitle: "Metronidazole simulations" # Subtitle of the document. May be left empty
+author: "" # Author of the document. May be left empty
+institute: "ESQlabs GmbH"
+date: "now"
+date-format: "YYYY-MM-DD HH:mm:ss" 
+params:  
+  loadPreSimulatedResults: FALSE # If `TRUE`, results will be loaded from the folder specified in `loadResultsFolder`
+  loadResultsFolder: "Metronidazole" # Sub-folder where simulated results is located, in case `loadPreSimulatedResults` is `TRUE`. The folder must be located in the "SimulationResults" folder defined in the `ProjectConfiguration`.
+output-file: "Female reproductive tract module validation report - Metronidazole" # Name of the output file.
+link-citations: TRUE
+reference-section-title: "References"
+bibliography: references_metronidazole.bib
+execute:
+  echo: false # do not show code chunks
+  output: true
+  warning: false # do not print warnings
+  cache: false # do not use cache unless specified in chunks
+format:
+  pdf:
+    toc: true # display table of content (TOC)
+    toc-depth: 3 # display three levels in TOC
+    toc-title: "Table of Content" # override default "Content" TOC title
+    lof: false # print list of figures?
+    lot: false # print list of tables?
+    fig-cap-location: bottom # figure captions location
+    tbl-cap-location: top # table captions location
+    number-sections: true # add numbers to sections
+    colorlinks: true # colorize links
+    fig-dpi: 300 # plot quality
+    fig-width: 6 # figure width
+    fig-asp: 0.618 # height/width ratio
+    fig-pos: "H" # ensure plots don't move to bottom of doc
+    fig-align: center # plots are centered by default
+    papersize: A4
+#    fontfamily: "Segoe UI" # Uncomment if you want to try using Segoe UI (requires system font)
+---
+
+
+```{r initialize, include = FALSE, eval = TRUE}
+# Load required libraries
+library(esqlabsR)
+# Source all utility files
+sourceAll("utils")
+# Create project configuration
+projectConfiguration <- esqlabsR::createProjectConfiguration(path = "../ProjectConfiguration.xlsx")
+
+## Set name of the observed data file
+projectConfiguration$dataFile <- "Metronidazole_TimeValuesData.xlsx"
+```
+
+```{r simulateScenarios1, include = FALSE, eval = TRUE}
+# This code runs the defined scenarios, generates figures, etc. This chunk can be re-used multiple times
+# in the report. When re-using, remember to re-name the chunk as every chunk must have a unique name.
+
+# Define the scenarios to execute, the sheets to load data from, and the plots to generate in this run
+scenarioNames <- list(
+  "Fredericsson 1987_500 mg_IV",
+  "Männistö 1984_500 mg_IV",
+  "Matilla 1983_500 mg_IV",
+  "Cunningham 1994_500 mg_PO",
+  "Fredericsson 1987_400 mg_PO",
+  "Männistö 1984_400 mg TID_PO",
+  "Matilla 1983_500 mg_PO",
+  "Salas-Herera 1991a_400 mg BID_PO",
+  "Cunningham 1994_37.5 mg_vaginal",
+  "Fredericsson 1987_500 mg_vaginal",
+  "Matilla 1983_500 mg_vaginal",
+  "Salas-Herrera 1991b_500 mg BID_vaginal"
+)
+
+dataSheets <- c(
+  "Männistö 1984",
+  "Salas-Herrera 1991",
+  "Cunningham 1994",
+  "Fredericsson 1987 ",
+  "Salas-Herrera 1991b",
+  "Mantilla 1983"
+)
+  
+plotGridNames <- c(
+  "Metronidazole_intravenous",
+  "Metronidazole_oral",
+  "Metronidazole_vaginal",
+  "Fredericsson_1987",
+  "Männistö_1984",
+  "Matilla_1983",
+  "Cunningham_1994",
+  "Salas-Herera_1991a",
+  "Cunningham_1994",
+  "Salas-Herrera_1991b"
+)
+
+outputFolder <- "Metronidazole"
+
+# Adjust simulation run options, if necessary.
+# E.g. disable check for negative values if required
+simulationRunOptions <- NULL
+# simulationRunOptions <- ospsuite::SimulationRunOptions$new()
+# simulationRunOptions$checkForNegativeValues <- FALSE
+
+reportResults <- createResults(
+  projectConfiguration = projectConfiguration,
+  params = params,
+  scenarioNames = scenarioNames,
+  customParams = NULL,
+  dataSheets = dataSheets,
+  customDataSets = dataSets,
+  plotGridNames = plotGridNames,
+  simulationRunOptions = simulationRunOptions
+)
+
+# A separate set of scenarios can be executed e.g. with specified custom parameters.
+# The two sets of results can be conbined with the function `combineResults()`.
+
+# Optionally - export the figures to PNG files
+# exportPlotsToPNG(reportResults$plots)
+```
+
+\newpage
+
+::: callout-note
+```{r resultsOrigin, echo=FALSE, results='asis'}
+if (params$loadPreSimulatedResults) {
+  cat("This report has been created with simulation results loaded from results folder '", params$loadResultsFolder, "'.")
+} else {
+  cat("This report has been created by running the simulations. The results have been stored in folder '", reportResults$scenarioResults$outputFolder, "'.")
+}
+```
+:::
+
+\newpage
+
+# Introduction
+
+This report presents the validation of the female reproductive tract module using Metronidazole simulations. The module is designed to simulate the pharmacokinetics of drug targetting tissues in the female reproductive tract, and distribution of the drug upon local administration (e.g., vaginal, intrauterine or cervical).
+
+Metronidazole is an antibiotic and antiprotozoal medication used to treat a range of infections, including bacterial vaginosis, trichomoniasis and endometritis. A PBPK model for IV adminstration of metronidazole was obtained from literature [@dallmann_physiologically_2018], and extended for oral and vaginal administration.
+
+# Compound: Metronidazole
+
+## Parameters
+
+Name                                             | Value                       | Value Origin            | Alternative       | Default
+---------------------------------------- | --------------------------- | ----------------------- | ----------------- | -----------
+Solubility at reference pH                       | 9500 mg/l                   |                         | Measurement       | True   
+Reference pH                                     | 7                           |                         | Measurement       | True   
+Lipophilicity                                    | -0.02 Log Units             |                         | Measurement       | True   
+Fraction unbound (plasma, reference value)       | 0.89                        |                         | Measurement       | True   
+Specific intestinal permeability (transcellular) | 4.32E-06 cm/min | Parameter Identification            | Fit               | True   
+Is small molecule                                | Yes                         |                         |                   |        
+Molecular weight                                 | 171 g/mol                   |                         |                   |        
+Plasma protein binding partner                   | Albumin                     |                         |                   |        
+  
+
+## Calculation methods
+
+Name                    | Value              
+----------------------- | -------------------
+Partition coefficients  | Rodgers and Rowland
+Cellular permeabilities | PK-Sim Standard    
+
+
+## Processes
+
+### Systemic Process: Total Hepatic Clearance-CLhep
+
+Species: Human
+
+#### Parameters
+
+Name                          | Value              | Value Origin
+----------------------------- | ------------------ | ------------:
+Fraction unbound (experiment) | 0.89               |             
+Lipophilicity (experiment)    | 0 Log Units        |             
+Plasma clearance              | 0 ml/min/kg        |             
+Specific clearance            | 0.013 1/min |             
+
+
+### Metabolizing Enzyme: CYP3A4-Pearce 2013
+
+Molecule: CYP3A4
+
+#### Parameters
+
+Name                               | Value                         | Value Origin
+---------------------------------- | ----------------------------- | ------------:
+In vitro Vmax for liver microsomes | 0.72 nmol/min/mg mic. protein |             
+Km                                 | 33.1 mmol/l                   |             
+kcat                               | 72.46 1/min            |             
+
+
+### Metabolizing Enzyme: CYP2A6-Pearce 2013
+
+Molecule: CYP2A6
+
+#### Parameters
+
+Name                               | Value                          | Value Origin
+---------------------------------- | ------------------------------ | ------------:
+In vitro Vmax for liver microsomes | 0.213 nmol/min/mg mic. protein |             
+Km                                 | 0.383 mmol/l                   |             
+kcat                               | 1.45 1/min             |             
+
+
+### Systemic Process: Renal Clearances-CLren
+
+Species: Human
+
+#### Parameters
+
+Name                          | Value               | Value Origin
+----------------------------- | ------------------- | ------------:
+Fraction unbound (experiment) | 0.89                |             
+Plasma clearance              | 0.15 ml/min/kg |             
+Specific clearance            | 0.022 1/min  |             
+
+
+
+# Clinical Data
+
+Data from the following studies has been used for model validation [@mannisto_concentrations_1984; @salas-herrera_concentration_1991; @salasherrera_plasma_1991; @mattila_comparative_1983, @fredricsson_systemic_1987; @cunningham_pharmacokinetics_1994]:
+
+```{r, results='asis'}
+library(knitr)
+library(kableExtra)
+
+# Create the data frame
+df <- data.frame(
+  Reference = c(
+    "Männistö 1984", "Männistö 1984", "Salas-Herrera 1991a", "Cunningham 1994",
+    "Cunningham 1994", "Fredericsson 1987", "Fredericsson 1987", "Fredericsson 1987",
+    "Salas-Herrera 1991b", "Mattila 1983", "Mattila 1983", "Mattila 1983"
+  ),
+  Administration_route = c(
+    "IV (20 min)", "PO", "PO", "PO", "Vaginal gel", "IV (15 min)", "PO",
+    "Vaginal tablet", "Vaginal pessary", "IV (20 min)", "PO", "Vaginal"
+  ),
+  Dose = c(
+    "500 mg", "400 mg TID", "400 mg BID", "500 mg", "37.5 mg", "500 mg",
+    "500 mg", "500 mg", "500 mg BID", "500 mg", "500 mg", "500 mg"
+  ),
+  Clinical_data = c(
+    "Plasma; Endometrium; Myometrium; Ovarium; Tuba", "Plasma; Endometrium; Myometrium; Ovarium; Tuba", "Plasma; Cervicovaginal fluid",
+    "Plasma", "Plasma", "Plasma", "Plasma", "Plasma", "Plasma", "Plasma", "Plasma", "Plasma"
+  ),
+  Population = c(
+    "European ICRP (female)", "European ICRP (female)", "European ICRP (female)",
+    "European ICRP (female)", "European ICRP (female)", "European ICRP (female)", "European ICRP (female)", "European ICRP (female)",
+    "European ICRP (female)", "European ICRP (male)", "European ICRP (1 male / 8 females)",
+    "European ICRP (female)"
+  ),
+  Weight_kg = c(
+    64.6, 64.8, 62.8, 59.1, 59.1, 22.5, 22.5, 22.5, 60.2, 77, 77, 58
+  ),
+  Height_cm = c(
+    160, 163.1, NA, NA, NA, NA, NA, NA, NA, 180, 178, 165
+  ),
+  Age_years = c(
+    48.9, 47.5, 25.3, 27.4, 27.4, NA, NA, NA, 25.3, 22, 22, 23
+  ),
+  Number_of_participants = c(
+    20, 10, 6, 12, 12, 5, 5, 5, 12, 6, 9, 6
+  ),
+  stringsAsFactors = FALSE
+)
+
+# Generate the table
+kable(df, "latex", booktabs = TRUE) %>%
+  kable_styling(latex_options = c("scale_down")) %>%
+  landscape()
+```
+
+# Results
+
+Comparison of individual simulations with observed data are presented in the following figures.
+
+```{r, include = TRUE, eval = TRUE, fig.asp = 1.2}
+#| label: fig-Metronidazole-Fredericsson-1987
+#| fig-cap: "Concentration-time profiles (a, b, c) and goodness-of-fit plots (d, e, f) of metronidazole administered as 500 mg intravenous (a, d), 400 mg oral (b, e), and 500 mg vaginal (c, f) administration. Lines represent predicted concentration for the mean individual. Points (errorbars) represent mean (standard deviation) observed data [@fredricsson_systemic_1987]. Solid line represent unity, and dashed lines represent 2-fold deviation."
+
+reportResults$plots$`Fredericsson_1987`
+```
+
+```{r, include = TRUE, eval = TRUE, fig.asp = 1.4, fig.width = 10}
+#| label: fig-Metronidazole-Männistö-1984
+#| fig-cap: "Concentration-time profiles (a, b, c, d, e, f) and goodness-of-fit plots (g, h, i, j, k, l) of metronidazole administered as 500 mg intravenous (a, c), and 400 mg thrice daily oral (b, d) administration. Lines represent predicted concentration for the mean individual. Points (errorbars) represent mean (standard deviation) observed data [@mannisto_concentrations_1984]. Solid line represent unity, and dashed lines represent 2-fold deviation."
+
+reportResults$plots$`Männistö_1984`
+```
+
+```{r, include = TRUE, eval = TRUE, fig.asp = 1.2}
+#| label: fig-Metronidazole-Matilla-1983
+#| fig-cap: "Concentration-time profiles (a, b, c) and goodness-of-fit plots (d, e, f) of metronidazole administered as 500 mg intravenous (a, d), 500 mg oral (b, e), and 500 mg vaginal (c, f) administration. Lines represent predicted concentration for the mean individual. Points (errorbars) represent mean (standard deviation) observed data [@mattila_comparative_1983]. Solid line represent unity, and dashed lines represent 2-fold deviation."
+
+reportResults$plots$`Matilla_1983`
+```
+
+
+```{r, include = TRUE, eval = TRUE, fig.asp = 1.2}
+#| label: fig-Metronidazole-Salas-Herera-1991a
+#| fig-cap: "Concentration-time profiles (a, b) and goodness-of-fit plots (c, d) of metronidazole administered as 400 mg bidaily oral (a, b) administration. Lines represent predicted concentration for the mean individual. Points (errorbars) represent mean (standard deviation) observed data [@salas-herrera_concentration_1991]. Solid line represent unity, and dashed lines represent 2-fold deviation."
+
+reportResults$plots$`Salas-Herera_1991a`
+
+```
+ 
+```{r, include = TRUE, eval = TRUE, fig.asp = 1.2}
+#| label: fig-Metronidazole-Cunningham-1994
+#| fig-cap: "Concentration-time profiles (a, b) and goodness-of-fit plots (c, d) of metronidazole administered as 500 mg oral (a, c), and 37.5 mg vaginal (b, d) administration. Lines represent predicted concentration for the mean individual. Points (errorbars) represent mean (standard deviation) observed data [@cunningham_pharmacokinetics_1994]. Solid line represent unity, and dashed lines represent 2-fold deviation."
+
+reportResults$plots$`Cunningham_1994`
+```
+
+```{r, include = TRUE, eval = TRUE}
+#| label: fig-Metronidazole-Salas-Herrera-1991b
+#| fig-cap: "Concentration-time profiles (a) and goodness-of-fit plots (b) of metronidazole administered 500 mg bidaily vaginal (a, b) administration. Lines represent predicted concentration for the mean individual. Points (errorbars) represent mean (standard deviation) observed data [@salasherrera_plasma_1991]. Solid line represent unity, and dashed lines represent 2-fold deviation."
+
+reportResults$plots$`Salas-Herrera_1991b`
+```
+
+Goodness-of-fit visual diagnstic plots for the PBPK model performance for intravenous, oral and vaginal administration are presented in the following figures.
+
+```{r, include = TRUE, eval = TRUE, fig.asp = 1}
+#| label: fig-Metronidazole-intravenous
+#| fig-cap: "Predicted versus observed plot for oral administration of metronidazole."
+
+reportResults$plots$`Metronidazole_intravenous`
+```
+
+```{r, include = TRUE, eval = TRUE, fig.asp = 1.2}
+#| label: fig-Metronidazole-oral
+#| fig-cap: "Predicted versus observed plot for intravenous administration of metronidazole."
+
+reportResults$plots$`Metronidazole_oral`
+```
+
+```{r, include = TRUE, eval = TRUE, fig.asp = 1}
+#| label: fig-Metronidazole-vaginal
+#| fig-cap: "Predicted versus observed plot for vaginal administration of metronidazole."
+
+reportResults$plots$`Metronidazole_vaginal`
+```
+
+\newpage
+# References
