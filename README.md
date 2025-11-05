@@ -4,13 +4,13 @@ Within this repository, we distribute MoBi<sup>®</sup> modules for the female r
 
 The extension module consists of five tissue compartments (endometrium, myometrium, vagina, cervix and breasts) and two fluid compartments (uterine fluid and cervicovaginal fluid) that can be added to a PBPK base model. This module does not consider the external part of the female reproductive tract. Furthermore, ovaries and fallopian tubes are not included due to lack of data. All tissue compartments have the same sub-compartmentalization as the tissues of the base whole-body structure.
 
-Discover how different administration routes affec drug exposure of levonorgestrel or metrinodazole via our shiny app [FemSim](https://femsim.esqlabs.com/).
-
 <p align="center">
 
 <img src="FRT_Structure_V2.png" width="50%"/>
 
 </p>
+
+Discover how different administration routes affec drug exposure of levonorgestrel or metrinodazole via our shiny app [FemSim](https://femsim.esqlabs.com/).
 
 ## Repository files
 
