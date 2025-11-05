@@ -10,7 +10,7 @@ The extension module consists of five tissue compartments (endometrium, myometri
 
 </p>
 
-Discover how different administration routes affec drug exposure of levonorgestrel or metrinodazole via our shiny app [FemSim](https://femsim.esqlabs.com/).
+Discover how different administration routes affect drug exposure of levonorgestrel or metrinodazole via our shiny app: [FemSim](https://femsim.esqlabs.com/).
 
 ## Repository files
 
