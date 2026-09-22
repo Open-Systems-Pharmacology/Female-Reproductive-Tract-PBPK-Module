@@ -1,6 +1,6 @@
 # Physiologically Based Pharmacokinetic Models for the Female Reproductive Tract
 
-Within this repository, we distribute MoBi<sup>®</sup> modules for the female reproductive tract. The module is an extension of the whole-body physiologically based pharmacokinetic models developed in Open Systems Pharmacology. The extension module can be used to simulate transfer of medicines towards female reproductive tract organs, or to simulate pharmacokinetics of compounds after local administration.
+Within this repository, we distribute MoBi<sup>®</sup> modules for the female reproductive tract ([Fischer-Holzhausen 2026](#references)). The module is an extension of the whole-body physiologically based pharmacokinetic models developed in Open Systems Pharmacology. The extension module can be used to simulate transfer of medicines towards female reproductive tract organs, or to simulate pharmacokinetics of compounds after local administration.
 
 The extension module consists of five tissue compartments (endometrium, myometrium, vagina, cervix and breasts) and two fluid compartments (uterine fluid and cervicovaginal fluid) that can be added to a PBPK base model. This module does not consider the external part of the female reproductive tract. Furthermore, ovaries and fallopian tubes are not included due to lack of data. All tissue compartments have the same sub-compartmentalization as the tissues of the base whole-body structure.
 
@@ -64,3 +64,5 @@ The model code is distributed under the [GPLv2 License](https://github.com/Open-
 **Cicali 2021** Cicali B, Lingineni K, Cristofoletti R, Wendl T, Hoechel J, Wiesinger H, Chaturvedula A, Vozmediano V, Schmidt S. Quantitative Assessment of Levonorgestrel Binding Partner Interplay and Drug-Drug Interactions Using Physiologically Based Pharmacokinetic Modeling. CPT Pharmacometrics Syst Pharmacol. 2021 Jan;10(1):48-58. doi: 10.1002/psp4.12572. 
 
 **Dallmann 2018** Dallmann A, Ince I, Coboeken K, Eissing T, Hempel G. A Physiologically Based Pharmacokinetic Model for Pregnant Women to Predict the Pharmacokinetics of Drugs Metabolized Via Several Enzymatic Pathways. Clin Pharmacokinet. 2018 Jun;57(6):749-768. doi: 10.1007/s40262-017-0594-5. PMID: 28924743.
+
+**Fischer-Holzhausen 2026** Fischer-Holzhausen S, Nauwelaerts N, Lautz LS, Mirzaee S, Baier V, Schaller S and Siccardi M. An open-source framework for physiologically-based pharmacokinetic modeling of kinetics in the female reproductive tract. Front. Pharmacol. 2026 Jul;17:1797636. doi: 10.3389/fphar.2026.1797636 
